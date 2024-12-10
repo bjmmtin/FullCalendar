@@ -7,6 +7,34 @@ import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid/index.js";
 import { useState } from "react";
 
+// Mockup data for bookings
+const mockBookings = [
+  {
+    _id: "1",
+    property: { address: "123 Main St" },
+    contact: { firstName: "John", lastName: "Doe" },
+    startTime: 1672531200, // Unix timestamp
+    localTimeZone: "America/Los_Angeles",
+    status: "confirmed",
+  },
+  {
+    _id: "2",
+    property: { address: "456 Elm St" },
+    contact: { firstName: "Jane", lastName: "Smith" },
+    startTime: 1672617600,
+    localTimeZone: "America/Los_Angeles",
+    status: "archived",
+  },
+  {
+    _id: "3",
+    property: { address: "789 Oak St" },
+    contact: { firstName: "Alice", lastName: "Johnson" },
+    startTime: 1672704000,
+    localTimeZone: "America/Los_Angeles",
+    status: "confirmed",
+  },
+];
+
 const customizeFullCalendar = () => {
   const [initialDate, setInitialDate] = useState(() => {
     const currentDate = new Date();
@@ -81,7 +109,7 @@ const customizeFullCalendar = () => {
       themeSystem="Simplex"
       eventClick={(calEvent) => handleClickBooking(calEvent.event.id)} // Ensure this function is defined
       eventContent={(eventInfo) => renderEventContent(eventInfo)}
-      events={bookings?.map((booking) => ({
+      events={mockBookings.map((booking) => ({
         id: booking._id,
         title: booking.property?.address || 'No Address',
         description: booking.property?.address || 'No Description',
@@ -90,8 +118,8 @@ const customizeFullCalendar = () => {
         },
         start: toZonedTime(new Date(booking.startTime * 1000), booking.localTimeZone),
         end: toZonedTime(new Date((booking.startTime + 15 * 60) * 1000), booking.localTimeZone),
-        classNames: booking.status === "archived" ? "fc-event-bg-default" : booking.property ? getClassNameFromId(booking.property._id) : "fc-event-bg-default",
-        borderColor: booking.status === "archived" ? "#646464" : booking.property ? getBorderColorFromId(booking.property._id) : "#646464",
+        classNames: booking.status === "archived" ? "fc-event-bg-default" : "fc-event-bg-default",
+        borderColor: booking.status === "archived" ? "#646464" : "#007bff",
         textColor: "#1F2327",
       }))}
       dateClick={(info) => console.log({ info })}
